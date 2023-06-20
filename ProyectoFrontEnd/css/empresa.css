@@ -1,0 +1,55 @@
+.empresa {
+    background-color: var(--background-rosa-medio);
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;       
+}
+
+.empresa__lista {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.empresa__item {
+    max-width: 350px;
+    box-sizing: border-box;
+    padding: 2rem 0 2rem 5rem;
+    background-repeat: no-repeat;
+    background-position: top 1.25rem left 2.5rem;
+}
+
+.item__titulo {
+    color: var(--fuente-ceniza-oscuro);
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.item__texto {
+    line-height: normal;
+}
+
+.empresa__item-mision {
+    background-image: url(../img/icono-mision.png);
+}
+
+.empresa__item-calidad {
+    background-image: url(../img/icono-calidad.png);
+}
+
+.empresa__item-vision {
+    background-image: url(../img/icono-vision.png);
+}
+
+/* MEDIA */
+
+
+
+@media screen and (min-width: 1024px){
+    .empresa{
+        background-color: var(--background-ceniza-claro);
+        justify-content: space-around;
+    }    
+}
+
