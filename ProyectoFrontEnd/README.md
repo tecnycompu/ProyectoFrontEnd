@@ -1,4 +1,4 @@
 # Proyecto FrontEnd
-Contiene archivos de Figma
+# Contiene archivos de Figma
 
-Archivos iniciales del proyecto para FrontEnd FullStack.
+# Archivos iniciales del proyecto para FrontEnd FullStack.
