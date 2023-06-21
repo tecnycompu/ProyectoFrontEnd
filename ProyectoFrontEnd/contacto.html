@@ -1,24 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Formulario de contacto</title>
-  <link href="css/formcontacto.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container">
-    <h2>Contáctanos</h2>
-    <form method="post" action="enviar_formulario.php">
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre">
+  <head>
+    <title>Formulario de contacto</title>
+    <link href="css/formcontacto.css" rel="stylesheet" />
 
-      <label for="correo">Correo electrónico:</label>
-      <input type="email" id="correo" name="correo">
+    <script>
+      // Función para validar el formulario antes de enviarlo
+      function validarFormulario() {
+        // Obtener los valores de los campos
+        var nombre = document.getElementById("nombre").value;
+        var correo = document.getElementById("correo").value;
+        var mensaje = document.getElementById("mensaje").value;
 
-      <label for="mensaje">Mensaje:</label>
-      <textarea id="mensaje" name="mensaje"></textarea>
+        // Validar que los campos sean llenados
+        if (nombre === "" || correo === "" || mensaje === "") {
+          alert("Por favor, completa todos los campos obligatorios.");
+          return false;
+        }
 
-      <input type="submit" value="Enviar">
-    </form>
-  </div>
-</body>
+        // Validar formato de correo electrónico
+        var correoExpresion = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!correo.match(correoExpresion)) {
+          alert("Por favor, ingresa un correo electrónico válido.");
+          return false;
+        }
+
+        // Si cumple las validaciones, enviar el formulario
+        return true;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Contacto</h2>
+      <form
+        method="post"
+        action="enviar_formulario.php"
+        onsubmit="return validarFormulario();"
+      >
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required />
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required />
+
+        <label for="mensaje">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" required></textarea>
+
+        <input type="submit" value="Enviar" />
+      </form>
+    </div>
+  </body>
 </html>
