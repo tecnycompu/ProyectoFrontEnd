@@ -23,14 +23,15 @@
 </head>
 <body>
     <header class="head container">
-        <img class="head__logo" src="/img/atc-line-two.png" alt="Logo Américan TecnyCompu">
+        <img class="head__logo" src="img/atc-line-two.png" alt="Logo Américan TecnyCompu">
         <nav class="head__navegacion">
-            <li class="head__enlace"><a href="#">Nosotros</a></li>
-            <li class="head__enlace"><a href="#">Servicios</a></li>
+            <li class="head__enlace"><a href="#">Inicio</a></li>
+            <li class="head__enlace"><a href="#noticias">Noticias</a></li>
+            <li class="head__enlace"><a href="#nosotros">Nosotros</a></li>
+            <li class="head__enlace"><a href="#servicios">Servicios</a></li>
             <li class="head__enlace"><a href="#">Blog</a></li>
-            <li class="head__enlace"><a href="#">Noticias</a></li>
-            <li class="head__enlace"><a href="#">Institucional</a></li>
-            <li class="head__enlace"><a href="#">Contacto</a></li>        
+            <li class="head__enlace"><a href="#institucional">Institucional</a></li>
+            <li class="head__enlace"><a href="#contacto">Contacto</a></li>        
         </nav>
     </header>
     <main>
@@ -38,25 +39,25 @@
         <!--seccion llamada-->
 
         <section class="llamada container">
-            <img class="llamada__banner" src="/img/BANNER03.jpg" alt="Banner Servicios">
+            <img class="llamada__banner" src="img/BANNER03.jpg" alt="Banner Servicios">
             <!--<h1 class="llamada__titulo">Servicio Técnico Especializado</h1> -->
             <!--<p class="llamada__texto">Es una empresa de servicios</p> -->
-            <a class="llamada__boton boton" href="#">Conosca nuestros servicios</a>
+            <a class="llamada__boton boton" href="#servicios">Conosca nuestros servicios</a>
         </section>
 
         <!--seccion noticias-->
 
-        <section class="noticias container">
+        <section id="noticias" class="noticias container"> 
             <h2 class="noticias__titulo">Noticias</h2>
             <a href="#">
                 <figure class="noticias__panel">
-                    <img src="/img/manLógico.png" alt="Sobre mantenimiento Lógico" class="noticias__panel-imagen">
+                    <img src="img/manLógico.png" alt="Sobre mantenimiento Lógico" class="noticias__panel-imagen">
                     <figC class="noticias__panel-texto">Conozca las razones de las principales fallas de su PC.</figC>
                 </figure>
             </a>
             <a href="#">
                 <figure class="noticias__panel">
-                    <img src="/img/asesoriaIT.png" alt="Sobre asesoramiento IT" class="noticias__panel-imagen">
+                    <img src="img/asesoriaIT.png" alt="Sobre asesoramiento IT" class="noticias__panel-imagen">
                     <figC class="noticias__panel-texto">¿Problemas informáticos? conozca estos concejos</figC>
                 </figure>
             </a><a href="" class="noticias__boton boton">Recibir noticias por correo</a>
@@ -64,7 +65,7 @@
 
         <!--seccion empresa-->
 
-        <section class="empresa container">
+        <section id="nosotros" class="empresa container"> 
             <ul class="empresa__lista">
                 <li class="empresa__item empresa__item-mision">
                     <h2 class="item__titulo">MISIÓN</h2>
@@ -111,7 +112,7 @@
 
         <!--seccion servicios-->
 
-        <section class="servicios container">
+        <section id="servicios" class="servicios container">
             <h2 class="servicios__titulo">servicios</h2>
             <ul class="servicios__tarjetas">
                 <li class="tarjetas tarjetas--start">
@@ -149,7 +150,7 @@
 
         <!--seccion contacto-->
 
-        <section class="contacto container">
+        <section id="contacto" class="contacto container">
             <h2 class="contacto__titulo">Contacto</h2>
             <p>Entre en contacto con nosotros</p>
             <a href="#" class="contacto__boton boton">Entre en contacto</a>
@@ -157,7 +158,7 @@
 
         <!--seccion institucional-->
 
-        <section class="institucional container">
+        <section id="institucional" class="institucional container">
             <h2 class="institucional__titulo">Institucional</h2>
             <div class="institucional__contenido">
                 <div class="institucional__informaciones">                    
@@ -191,12 +192,14 @@
         
             <nav>
                 <ul class="footer__navegacion">
-                    <li class="footer__enlace"><a href="#">Nosotros</a></li>
-                        <li class="footer__enlace"><a href="#">Servicios</a></li>
+
+                        <li class="footer__enlace"><a href="#">Inicio</a></li>
+                        <li class="footer__enlace"><a href="#noticias">Noticias</a></li>
+                        <li class="footer__enlace"><a href="#nosotros">Nosotros</a></li>
+                        <li class="footer__enlace"><a href="#servicios">Servicios</a></li>
                         <li class="footer__enlace"><a href="#">Blog</a></li>
-                        <li class="footer__enlace"><a href="#">Noticias</a></li>
-                        <li class="footer__enlace"><a href="#">Institucional</a></li>
-                        <li class="footer__enlace"><a href="#">Contacto</a></li>
+                        <li class="footer__enlace"><a href="#institucional">Institucional</a></li>
+                        <li class="footer__enlace"><a href="#contacto">Contacto</a></li>     
                 </ul>
             </nav>
         </footer>
