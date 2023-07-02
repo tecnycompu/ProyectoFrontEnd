@@ -3,7 +3,7 @@
 // VALIDAR QUE ESTE USUARIO LOGUEADO
 session_start();
 
-$url_base="http://localhost/tecnycompu/admin/";
+$url_base="http://localhost/ProyectoFrontEnd/ProyectoBackend/admin/";
 if(!isset($_SESSION['usuario'])){
   header("Location:".$url_base."login.php");
 }
