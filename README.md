@@ -7,7 +7,7 @@ Contiene 2 carpetas de 2 proyecto diferentes
 - Proyecto BackEnd (proyecto involucra boostrap y php en el backend) (proyecto para despliegue)
 Contiene 1 base de datos para el proyecto backend
 
-# Proyecto BackEnd corriendo en web hosting
+# Proyecto BackEnd corriendo en web hosting :man_technologist:
 - www.tecnycompu.net
 - www.tecnycompu.net/admin
   
