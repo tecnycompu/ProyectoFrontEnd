@@ -45,7 +45,7 @@ if ($_POST) {
     //ejecuta la inserción de los datos
 
     $sentencia->execute();
-    $mensaje = "Registro agregado con éxito.";
+    $mensaje = "Registro modificado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
 }
 

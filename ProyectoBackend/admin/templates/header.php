@@ -58,3 +58,9 @@ if(!isset($_SESSION['usuario'])){
   <main clas="container">
     <br/>
     
+    <script>
+      <?php if (isset($_GET['mensaje'])){?>
+      Swal.fire({icon:"success", title:"<?php echo $_GET['mensaje'] ?>"});
+      <?php }?>
+
+    </script>

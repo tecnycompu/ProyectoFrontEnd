@@ -36,7 +36,7 @@ if($_POST){
     $sentencia->bindParam(":linkedin", $linkedin);
 
     $sentencia->execute();
-    $mensaje = "Registro Modificado con éxito.";
+    $mensaje = "Registro agregado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
 
 }
