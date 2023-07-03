@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $mensaje = $_POST['mensaje'];
 
   // Configurar los detalles del correo electrónico
-  $to = 'tu@email.com';
+  $to = 'info@tecnycompu.net';
   $subject = 'Nuevo mensaje de contacto';
   $message = "Nombre: $nombre\n";
   $message .= "Email: $email\n";
