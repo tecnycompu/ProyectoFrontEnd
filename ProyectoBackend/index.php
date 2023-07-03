@@ -75,7 +75,7 @@ $lista_configuraciones = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         <div class="container">
             <div class="masthead-subheading"><?php echo $lista_configuraciones[0]['valor']; ?></div>
             <div class="masthead-heading text-uppercase"><?php echo $lista_configuraciones[1]['valor']; ?></div>
-            <a class="btn btn-primary btn-xl text-uppercase" href="#services"><?php echo $lista_configuraciones[2]['valor']; ?></a>
+            <a class="btn btn-primary btn-xl text-uppercase" href="#services"><?php echo $lista_configuraciones[2]['valor']; ?></a> 
         </div>
     </header>
     <!-- Services-->
@@ -276,31 +276,33 @@ $lista_configuraciones = $sentencia->fetchAll(PDO::FETCH_ASSOC);
             <!-- To make this form functional, sign up at-->
             <!-- https://startbootstrap.com/solution/contact-forms-->
             <!-- to get an API token!-->
-            <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+            
+            <!-- <form id="contactForm" data-sb-form-api-token="API_TOKEN">  -->
+            <form id="contactForm" method="post" action="enviar_correo.php">
                 <div class="row align-items-stretch mb-5">
                     <div class="col-md-6">
                         <div class="form-group">
                             <!-- Name input-->
-                            <input class="form-control" id="name" type="text" placeholder="Your Name *" data-sb-validations="required" />
-                            <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                            <input class="form-control" id="nombre" name="nombre" type="text" placeholder="Su nombre *" data-sb-validations="required" />
+                            <div class="invalid-feedback" data-sb-feedback="name:required">Se requiere un nombre.</div>
                         </div>
                         <div class="form-group">
                             <!-- Email address input-->
-                            <input class="form-control" id="email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
-                            <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                            <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                            <input class="form-control" id="email" name="email" type="email" placeholder="Tu correo electrónico *" data-sb-validations="required,email" />
+                            <div class="invalid-feedback" data-sb-feedback="email:required">Se requiere un email.</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">El correo no es válido.</div>
                         </div>
                         <div class="form-group mb-md-0">
                             <!-- Phone number input-->
-                            <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" data-sb-validations="required" />
-                            <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                            <input class="form-control" id="telefono" name="telefono" type="tel" placeholder="Su teléfono *" data-sb-validations="required" />
+                            <div class="invalid-feedback" data-sb-feedback="phone:required">Se requiere un número de teléfono.</div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-group-textarea mb-md-0">
                             <!-- Message input-->
-                            <textarea class="form-control" id="message" placeholder="Your Message *" data-sb-validations="required"></textarea>
-                            <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                            <textarea class="form-control" id="mensaje" name="mensaje" placeholder="Tu mensaje *" data-sb-validations="required"></textarea>
+                            <div class="invalid-feedback" data-sb-feedback="message:required">Se requiere un mensaje.</div>
                         </div>
                     </div>
                 </div>
@@ -310,8 +312,8 @@ $lista_configuraciones = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                 <!-- has successfully submitted-->
                 <div class="d-none" id="submitSuccessMessage">
                     <div class="text-center text-white mb-3">
-                        <div class="fw-bolder">Form submission successful!</div>
-                        To activate this form, sign up at
+                        <div class="fw-bolder">¡Envío de formulario exitoso!</div>
+                        <!-- To activate this form, sign up at -->
                         <br />
                         <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                     </div>
@@ -321,10 +323,10 @@ $lista_configuraciones = $sentencia->fetchAll(PDO::FETCH_ASSOC);
                 <!-- This is what your users will see when there is-->
                 <!-- an error submitting the form-->
                 <div class="d-none" id="submitErrorMessage">
-                    <div class="text-center text-danger mb-3">Error sending message!</div>
+                    <div class="text-center text-danger mb-3">¡Error al enviar el mensaje!</div>
                 </div>
                 <!-- Submit Button-->
-                <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit"><?php echo $lista_configuraciones[19]['valor']; ?></button></div>
+                <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit"><?php echo $lista_configuraciones[19]['valor']; ?></button></div>
             </form>
         </div>
     </section>
@@ -332,15 +334,15 @@ $lista_configuraciones = $sentencia->fetchAll(PDO::FETCH_ASSOC);
     <footer class="footer py-4">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Américan TecnyCompu 2023</div>
                 <div class="col-lg-4 my-3 my-lg-0">
                     <a class="btn btn-dark btn-social mx-2" href="<?php echo $lista_configuraciones[16]['valor']; ?>" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     <a class="btn btn-dark btn-social mx-2" href="<?php echo $lista_configuraciones[17]['valor']; ?>" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-dark btn-social mx-2" href="<?php echo $lista_configuraciones[18]['valor']; ?>" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <div class="col-lg-4 text-lg-end">
-                    <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                    <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    <a class="link-dark text-decoration-none me-3" href="#!">Política de privacidad</a>
+                    <a class="link-dark text-decoration-none" href="#!">Condiciones de uso</a>
                 </div>
             </div>
         </div>
