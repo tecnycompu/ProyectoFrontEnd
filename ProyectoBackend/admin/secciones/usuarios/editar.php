@@ -2,59 +2,45 @@
 include("../../db.php");
 
 if (isset($_GET['txtID'])) {
-
-    // recuperar los datos del ID correspondiente o seleccionado
-
     $txtID = (isset($_GET['txtID'])) ? $_GET['txtID'] : "";
     $sentencia = $conexion->prepare("SELECT * FROM usuarios WHERE id=:id");
-    //Dnde encuentre ":   " reemplaza el valor de la variable
     $sentencia->bindParam(":id", $txtID);
-    //ejecuta la inserción de los datos
     $sentencia->execute();
-
     $registro = $sentencia->fetch(PDO::FETCH_LAZY);
 
-    //Igualamos cada registro capturado 
     $usuario = $registro['usuario'];
     $correo = $registro['correo'];
-    $password = $registro['password'];
 }
 
-
 if ($_POST) {
-
-    //print_r($_POST);
-
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
     $usuario = (isset($_POST['usuario'])) ? $_POST['usuario'] : "";
     $correo = (isset($_POST['correo'])) ? $_POST['correo'] : "";
-    $password = (isset($_POST['password'])) ? $_POST['password'] : "";
 
-
-    //Recibe los datos del formulario y prepara la insercion a la base
-
-    $sentencia = $conexion->prepare("UPDATE  usuarios  
-    SET
-    usuario=:usuario,
-    correo=:correo,
-    password=:password
-    WHERE id=:id");
+    // Solo actualizamos la contraseña si se proporciona una nueva
+    if (!empty($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $sentencia = $conexion->prepare("UPDATE usuarios 
+            SET usuario=:usuario, correo=:correo, password=:password 
+            WHERE id=:id");
+        $sentencia->bindParam(":password", $password);
+    } else {
+        $sentencia = $conexion->prepare("UPDATE usuarios 
+            SET usuario=:usuario, correo=:correo 
+            WHERE id=:id");
+    }
 
     $sentencia->bindParam(":usuario", $usuario);
     $sentencia->bindParam(":correo", $correo);
-    $sentencia->bindParam(":password", $password);
     $sentencia->bindParam(":id", $txtID);
-
-    //ejecuta la inserción de los datos
-
     $sentencia->execute();
+
     $mensaje = "Registro modificado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
 }
 
-
-
-include("../../templates/header.php"); ?>
+include("../../templates/header.php");
+?>
 
 <div class="card">
     <div class="card-header">
@@ -75,7 +61,7 @@ include("../../templates/header.php"); ?>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
-                <input type="password" class="form-control" value="<?php echo $password; ?>" name="password" id="password" aria-describedby="helpId" placeholder="Password">
+                <input type="password" class="form-control" name="password" id="password" aria-describedby="helpId" placeholder="Password">
             </div>
 
             <div class="mb-3">
@@ -90,6 +76,5 @@ include("../../templates/header.php"); ?>
 
     </div>
 </div>
-
 
 <?php include("../../templates/footer.php"); ?>

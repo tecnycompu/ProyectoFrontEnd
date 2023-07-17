@@ -1,41 +1,34 @@
-<?php 
-
+<?php
+//global $conexion;
 session_start();
 
+if ($_POST) {
+    include("./db.php");
+    //print_r($_POST);
 
-if($_POST){
-  include("./db.php");
-  //print_r($_POST);
+    $usuario = (isset($_POST['usuario'])) ? $_POST['usuario'] : "";
+    $password = (isset($_POST['password'])) ? $_POST['password'] : "";
 
-  $usuario = (isset($_POST['usuario'])) ? $_POST['usuario'] : "";
-  $password = (isset($_POST['password'])) ? $_POST['password'] : "";
-  
-  $sentencia = $conexion->prepare("SELECT *, count(*) as n_usuario 
+    $sentencia = $conexion->prepare("SELECT *, count(*) as n_usuario 
                         FROM `usuarios`
                         WHERE usuario=:usuario
-                        AND password=:password                        
-                        ");
-  $sentencia->bindParam(":usuario", $usuario);
-  $sentencia->bindParam(":password", $password);
-  $sentencia->execute();
+                      ");
+    $sentencia->bindParam(":usuario", $usuario);
+    $sentencia->execute();
 
+    $lista_usuarios = $sentencia->fetch(PDO::FETCH_LAZY);
 
-  $lista_usuarios = $sentencia->fetch(PDO::FETCH_LAZY);
-
-  //print_r($lista_usuarios);
-
-  if($lista_usuarios['n_usuario']>0){
-    //print_r("el usuario y contraseña existe");
-    $_SESSION['usuario']=$lista_usuarios['usuario'];
-    $_SESSION['logueado']=true;
-    header("Location:index.php");
-  }else{
-    $mensaje="Error: El Usuario o contraseña son incorrectos";
-
-  }
-
+    if ($lista_usuarios['n_usuario'] > 0 && password_verify($password, $lista_usuarios['password'])) {
+        // La contraseña es válida, se permite el acceso
+        $_SESSION['usuario'] = $lista_usuarios['usuario'];
+        $_SESSION['logueado'] = true;
+        header("Location:index.php");
+    } else {
+        $mensaje = "Error: El Usuario o contraseña son incorrectos";
+    }
 }
 
+// Resto del código sigue igual
 ?>
 
 <!doctype html>

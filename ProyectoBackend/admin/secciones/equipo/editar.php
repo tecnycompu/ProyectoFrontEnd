@@ -1,66 +1,53 @@
 <?php 
 include("../../db.php");
+include("../functions.php");
 
 if (isset($_GET['txtID'])) {
 
-    // recuperar los datos del ID correspondiente o seleccionado
+    // Recuperar los datos del ID correspondiente o seleccionado
     $txtID = (isset($_GET['txtID'])) ? $_GET['txtID'] : "";
     $sentencia = $conexion->prepare("SELECT * FROM equipo WHERE id=:id");
-    //Dnde encuentre ":   " reemplaza el valor de la variable
     $sentencia->bindParam(":id", $txtID);
-    //ejecuta la inserción de los datos
     $sentencia->execute();
     $registro = $sentencia->fetch(PDO::FETCH_LAZY);
 
-    //Igualamos cada registro capturado 
-
-    //$txtID = $registro['ID'];
+    // Ahora, vamos a cambiar cómo se asignan los valores para evitar la duplicación
+    // Verificamos si hay un envío por POST y tomamos los valores del formulario
+    if ($_POST) {
+        $nombrecompleto = (isset($_POST['nombrecompleto'])) ? $_POST['nombrecompleto'] : $registro['nombrecompleto'];
+        $puesto = (isset($_POST['puesto'])) ? $_POST['puesto'] : $registro['puesto'];
+        $twitter = (isset($_POST['twitter'])) ? $_POST['twitter'] : $registro['twitter'];
+        $facebook = (isset($_POST['facebook'])) ? $_POST['facebook'] : $registro['facebook'];
+        $linkedin = (isset($_POST['linkedin'])) ? $_POST['linkedin'] : $registro['linkedin'];
+    } else {
+        // Si no hay envío por POST, tomamos los valores del registro obtenido de la base de datos
+        $nombrecompleto = $registro['nombrecompleto'];
+        $puesto = $registro['puesto'];
+        $twitter = $registro['twitter'];
+        $facebook = $registro['facebook'];
+        $linkedin = $registro['linkedin'];
+    }
 
     $imagen = $registro['imagen'];
-    $nombrecompleto = $registro['nombrecompleto'];
-    $puesto = $registro['puesto'];
-    $twitter = $registro['twitter'];
-    $facebook = $registro['facebook'];
-    $linkedin = $registro['linkedin'];
-
 }
 
 if ($_POST) {
 
-    // recepcionamos los valores del formulario
+    // Recepcionamos los valores del formulario
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-    //-----------
 
-    // recepcionamos imagen
-    $imagen = (isset($_FILES["imagen"]["name"])) ? $_FILES["imagen"]["name"] : "";
+    // Recibimos los demás datos del formulario
     $nombrecompleto = (isset($_POST['nombrecompleto'])) ? $_POST['nombrecompleto'] : "";
     $puesto = (isset($_POST['puesto'])) ? $_POST['puesto'] : ""; 
     $twitter = (isset($_POST['twitter'])) ? $_POST['twitter'] : "";
     $facebook = (isset($_POST['facebook'])) ? $_POST['facebook'] : "";
     $linkedin = (isset($_POST['linkedin'])) ? $_POST['linkedin'] : "";
 
-    //Recibe los datos del formulario y prepara la insercion a la base
-    $sentencia = $conexion->prepare("UPDATE equipo 
-    SET nombrecompleto=:nombrecompleto,puesto=:puesto,twitter=:twitter,facebook=:facebook,linkedin=:linkedin 
-    WHERE id=:id");
-
-    //Donde encuentre ":   " reemplaza el valor de la variable
-    $sentencia->bindParam(":nombrecompleto", $nombrecompleto);
-    $sentencia->bindParam(":puesto", $puesto);
-    $sentencia->bindParam(":twitter", $twitter);
-    $sentencia->bindParam(":facebook", $facebook);
-    $sentencia->bindParam(":linkedin", $linkedin);
-    $sentencia->bindParam(":id", $txtID);
-
-    $sentencia->execute();
-
+    // Si el usuario ha seleccionado una nueva imagen, la procesamos y actualizamos en la base de datos
     if ($_FILES["imagen"]["name"] != "") {
-        // recepcionamos imagen
-        $imagen = (isset($_FILES["imagen"]["name"])) ? $_FILES["imagen"]["name"] : "";
-
-        // Adjuntamos imagen con una fecha para diferenciar
+        // Procesamos la imagen y la guardamos con un nombre único
         $fecha_imagen = new DateTime();
-        $nombre_archivo_imagen = ($imagen != "") ? $fecha_imagen->getTimestamp() . "_" . $imagen : "";
+        $nombre_archivo_imagen = $fecha_imagen->getTimestamp() . "_" . $_FILES["imagen"]["name"];
         $tmp_imagen = $_FILES["imagen"]["tmp_name"];
         move_uploaded_file($tmp_imagen, "../../../assets/img/team/" . $nombre_archivo_imagen);
         
@@ -70,17 +57,34 @@ if ($_POST) {
         $sentencia->execute();
         $registro_imagen = $sentencia->fetch(PDO::FETCH_LAZY);
         if (isset($registro_imagen["imagen"])) {
-
-            if (file_exists("../../../assets/img/team,/" . $registro_imagen["imagen"])) {
-                unlink("../../../assets/img/team,/" . $registro_imagen["imagen"]);
+            if (file_exists("../../../assets/img/team/" . $registro_imagen["imagen"])) {
+                unlink("../../../assets/img/team/" . $registro_imagen["imagen"]);
             }
         }
+
+        // Actualizamos la ruta de la imagen en la base de datos
         $sentencia = $conexion->prepare("UPDATE equipo SET imagen=:imagen WHERE id=:id");
         $sentencia->bindParam(":imagen", $nombre_archivo_imagen);
         $sentencia->bindParam(":id", $txtID);
-        $sentencia->execute();     
-        $imagen=$nombre_archivo_imagen;
+        $sentencia->execute(); 
     }
+
+    // Preparamos la actualización en la base de datos para los otros campos
+    $sentencia = $conexion->prepare("UPDATE equipo 
+        SET nombrecompleto=:nombrecompleto, puesto=:puesto, twitter=:twitter, facebook=:facebook, linkedin=:linkedin 
+        WHERE id=:id");
+
+    // Reemplazamos los valores en la consulta
+    $sentencia->bindParam(":nombrecompleto", $nombrecompleto);
+    $sentencia->bindParam(":puesto", $puesto);
+    $sentencia->bindParam(":twitter", $twitter);
+    $sentencia->bindParam(":facebook", $facebook);
+    $sentencia->bindParam(":linkedin", $linkedin);
+    $sentencia->bindParam(":id", $txtID);
+
+    // Ejecutamos la actualización
+    $sentencia->execute();
+
     $mensaje = "Registro Modificado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
 }

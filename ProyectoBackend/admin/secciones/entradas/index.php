@@ -26,6 +26,7 @@ if (isset($_GET['txtID'])) {
     $sentencia->bindParam(":id", $txtID);
     //ejecuta la inserción de los datos
     $sentencia->execute();
+    
 }
 
 

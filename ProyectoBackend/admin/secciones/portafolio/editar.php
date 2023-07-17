@@ -1,36 +1,44 @@
 <?php
 include("../../db.php");
+include("../functions.php");
 
 if (isset($_GET['txtID'])) {
 
-    // recuperar los datos del ID correspondiente o seleccionado
+    // Recuperar los datos del ID correspondiente o seleccionado
     $txtID = (isset($_GET['txtID'])) ? $_GET['txtID'] : "";
     $sentencia = $conexion->prepare("SELECT * FROM portafolio WHERE id=:id");
-    //Dnde encuentre ":   " reemplaza el valor de la variable
     $sentencia->bindParam(":id", $txtID);
-    //ejecuta la inserción de los datos
     $sentencia->execute();
     $registro = $sentencia->fetch(PDO::FETCH_LAZY);
 
-    //Igualamos cada registro capturado 
+    // Ahora, vamos a cambiar cómo se asignan los valores para evitar la duplicación
+    // Verificamos si hay un envío por POST y tomamos los valores del formulario
+    if ($_POST) {
+        $titulo = (isset($_POST['titulo'])) ? $_POST['titulo'] : $registro['titulo'];
+        $subtitulo = (isset($_POST['subtitulo'])) ? $_POST['subtitulo'] : $registro['subtitulo'];
+        $descripcion = (isset($_POST['descripcion'])) ? $_POST['descripcion'] : $registro['descripcion'];
+        $cliente = (isset($_POST['cliente'])) ? $_POST['cliente'] : $registro['cliente'];
+        $categoria = (isset($_POST['categoria'])) ? $_POST['categoria'] : $registro['categoria'];
+        $url = (isset($_POST['url'])) ? $_POST['url'] : $registro['url'];
+    } else {
+        // Si no hay envío por POST, tomamos los valores del registro obtenido de la base de datos
+        $titulo = $registro['titulo'];
+        $subtitulo = $registro['subtitulo'];
+        $descripcion = $registro['descripcion'];
+        $cliente = $registro['cliente'];
+        $categoria = $registro['categoria'];
+        $url = $registro['url'];
+    }
 
-    $titulo = $registro['titulo'];
-    $subtitulo = $registro['subtitulo'];
     $imagen = $registro['imagen'];
-    $descripcion = $registro['descripcion'];
-    $cliente = $registro['cliente'];
-    $categoria = $registro['categoria'];
-    $url = $registro['url'];
 }
 
 if ($_POST) {
 
-    //print_r($_POST);
-
-    // recepcionamos los valores del formulario
+    // Recepcionamos los valores del formulario
     $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-    //-----------
 
+    // Recibimos los demás datos del formulario
     $titulo = (isset($_POST['titulo'])) ? $_POST['titulo'] : "";
     $subtitulo = (isset($_POST['subtitulo'])) ? $_POST['subtitulo'] : "";
     $descripcion = (isset($_POST['descripcion'])) ? $_POST['descripcion'] : "";
@@ -38,38 +46,12 @@ if ($_POST) {
     $categoria = (isset($_POST['categoria'])) ? $_POST['categoria'] : "";
     $url = (isset($_POST['url'])) ? $_POST['url'] : "";
 
-    $sentencia = $conexion->prepare("UPDATE  portafolio  
-    SET
-    titulo=:titulo,
-    subtitulo=:subtitulo,
-    descripcion=:descripcion,
-    cliente=:cliente,
-    categoria=:categoria,
-    url=:url
-    WHERE id=:id");
-
-    $sentencia->bindParam(":titulo", $titulo);
-    $sentencia->bindParam(":subtitulo", $subtitulo);
-    $sentencia->bindParam(":descripcion", $descripcion);
-
-    $sentencia->bindParam(":cliente", $cliente);
-    $sentencia->bindParam(":categoria", $categoria);
-    $sentencia->bindParam(":url", $url);
-    $sentencia->bindParam(":id", $txtID);
-
-    //ejecuta la inserción de los datos
-
-    $sentencia->execute();
-
+    // Si el usuario ha seleccionado una nueva imagen, la procesamos y actualizamos en la base de datos
     if ($_FILES["imagen"]["name"] != "") {
-        // recepcionamos imagen
-        $imagen = (isset($_FILES["imagen"]["name"])) ? $_FILES["imagen"]["name"] : "";
-
-        // Adjuntamos imagen con una fecha para diferenciar
+        // Procesamos la imagen y la guardamos con un nombre único
         $fecha_imagen = new DateTime();
-        $nombre_archivo_imagen = ($imagen != "") ? $fecha_imagen->getTimestamp() . "_" . $imagen : "";
+        $nombre_archivo_imagen = $fecha_imagen->getTimestamp() . "_" . $_FILES["imagen"]["name"];
         $tmp_imagen = $_FILES["imagen"]["tmp_name"];
-
         move_uploaded_file($tmp_imagen, "../../../assets/img/portfolio/" . $nombre_archivo_imagen);
         
         // Borrado del archivo anterior
@@ -77,21 +59,35 @@ if ($_POST) {
         $sentencia->bindParam(":id", $txtID);
         $sentencia->execute();
         $registro_imagen = $sentencia->fetch(PDO::FETCH_LAZY);
-
         if (isset($registro_imagen["imagen"])) {
-
             if (file_exists("../../../assets/img/portfolio/" . $registro_imagen["imagen"])) {
                 unlink("../../../assets/img/portfolio/" . $registro_imagen["imagen"]);
             }
         }
 
-
-
+        // Actualizamos la ruta de la imagen en la base de datos
         $sentencia = $conexion->prepare("UPDATE portafolio SET imagen=:imagen WHERE id=:id");
         $sentencia->bindParam(":imagen", $nombre_archivo_imagen);
         $sentencia->bindParam(":id", $txtID);
-        $sentencia->execute();        
+        $sentencia->execute(); 
     }
+
+    // Preparamos la actualización en la base de datos para los otros campos
+    $sentencia = $conexion->prepare("UPDATE portafolio 
+        SET titulo=:titulo, subtitulo=:subtitulo, descripcion=:descripcion, cliente=:cliente, categoria=:categoria, url=:url 
+        WHERE id=:id");
+
+    // Reemplazamos los valores en la consulta
+    $sentencia->bindParam(":titulo", $titulo);
+    $sentencia->bindParam(":subtitulo", $subtitulo);
+    $sentencia->bindParam(":descripcion", $descripcion);
+    $sentencia->bindParam(":cliente", $cliente);
+    $sentencia->bindParam(":categoria", $categoria);
+    $sentencia->bindParam(":url", $url);
+    $sentencia->bindParam(":id", $txtID);
+
+    // Ejecutamos la actualización
+    $sentencia->execute();
 
     $mensaje = "Registro Modificado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);

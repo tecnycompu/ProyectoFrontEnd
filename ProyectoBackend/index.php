@@ -1,6 +1,5 @@
 <?php
 include("admin/db.php");
-
 //Selecciona todos los registros servicios
 
 $sentencia = $conexion->prepare("SELECT * FROM `servicios`");
