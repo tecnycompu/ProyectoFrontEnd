@@ -1,53 +1,41 @@
 <?php
 include("../../db.php");
+include("../functions.php");
 
 if ($_POST) {
-    //print_r($_POST);
-    //print_r($_FILES);
-
-    // recepcionamos los valores del formulario
+    // Recepcionamos los valores del formulario
     $titulo = (isset($_POST['titulo'])) ? $_POST['titulo'] : "";
     $subtitulo = (isset($_POST['subtitulo'])) ? $_POST['subtitulo'] : "";
-
-    // recepcionamos imagen
-    $imagen = (isset($_FILES["imagen"]["name"])) ? $_FILES["imagen"]["name"] : "";
-
     $descripcion = (isset($_POST['descripcion'])) ? $_POST['descripcion'] : "";
     $cliente = (isset($_POST['cliente'])) ? $_POST['cliente'] : "";
     $categoria = (isset($_POST['categoria'])) ? $_POST['categoria'] : "";
     $url = (isset($_POST['url'])) ? $_POST['url'] : "";
 
+    // Recepcionamos imagen
+    $imagen = $_FILES["imagen"];
+    $nombre_archivo_imagen = subirImagen($imagen, "../../../assets/img/portfolio/");
 
-    // Adjuntamos imagen con una fecha para diferenciar
+    // Preparamos los datos para la inserción a la base de datos
+    $campos = "`titulo`, `subtitulo`, `imagen`, `descripcion`, `cliente`, `categoria`, `url`";
+    $valores = ":titulo, :subtitulo, :imagen, :descripcion, :cliente, :categoria, :url";
 
-    $fecha_imagen=new DateTime();
-    $nombre_archivo_imagen=($imagen!="")? $fecha_imagen->getTimestamp()."_".$imagen:"";
-
-    $tmp_imagen=$_FILES["imagen"]["tmp_name"];
-    if($tmp_imagen!=""){
-        move_uploaded_file($tmp_imagen,"../../../assets/img/portfolio/".$nombre_archivo_imagen);
-
-    }
-
-    //Recibe los datos del formulario y prepara la insercion a la base
-    $sentencia = $conexion->prepare("INSERT INTO `portafolio` (`ID`, `titulo`, `subtitulo`, `imagen`, `descripcion`, `cliente`, `categoria`, `url`) 
-    VALUES (NULL, :titulo, :subtitulo, :imagen, :descripcion, :cliente, :categoria, :url);");
-
-    //Dnde encuentre ":   " reemplaza el valor de la variable
-    $sentencia->bindParam(":titulo", $titulo);
-    $sentencia->bindParam(":subtitulo", $subtitulo);
-    $sentencia->bindParam(":imagen", $nombre_archivo_imagen);
-    $sentencia->bindParam(":descripcion", $descripcion);
-    $sentencia->bindParam(":cliente", $cliente);
-    $sentencia->bindParam(":categoria", $categoria);
-    $sentencia->bindParam(":url", $url);
-
-    $sentencia->execute();
+    // Insertamos el registro en la base de datos
+    $sql = "INSERT INTO `portafolio` ($campos) VALUES ($valores);";
+    $sentencia = $conexion->prepare($sql);
     
+    $sentencia->execute([
+        ":titulo" => $titulo,
+        ":subtitulo" => $subtitulo,
+        ":imagen" => $nombre_archivo_imagen,
+        ":descripcion" => $descripcion,
+        ":cliente" => $cliente,
+        ":categoria" => $categoria,
+        ":url" => $url
+    ]);
+
     $mensaje = "Registro agregado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
 }
-
 
 include("../../templates/header.php");
 ?>

@@ -1,45 +1,40 @@
 <?php
 include("../../db.php");
+include("../functions.php");
 
-
-if($_POST){
-
-    // recepcionamos los valores del formulario
-
-    // recepcionamos imagen
-    $imagen = (isset($_FILES["imagen"]["name"])) ? $_FILES["imagen"]["name"] : "";
+if ($_POST) {
+    // Recepcionamos los valores del formulario
     $nombrecompleto = (isset($_POST['nombrecompleto'])) ? $_POST['nombrecompleto'] : "";
-    $puesto = (isset($_POST['puesto'])) ? $_POST['puesto'] : ""; 
+    $puesto = (isset($_POST['puesto'])) ? $_POST['puesto'] : "";
     $twitter = (isset($_POST['twitter'])) ? $_POST['twitter'] : "";
     $facebook = (isset($_POST['facebook'])) ? $_POST['facebook'] : "";
     $linkedin = (isset($_POST['linkedin'])) ? $_POST['linkedin'] : "";
 
-    $fecha_imagen=new DateTime();
-    $nombre_archivo_imagen=($imagen!="")? $fecha_imagen->getTimestamp()."_".$imagen:"";
+    // Recepcionamos imagen
+    $imagen = $_FILES["imagen"];
+    $nombre_archivo_imagen = subirImagen($imagen, "../../../assets/img/team/");
 
-    $tmp_imagen=$_FILES["imagen"]["tmp_name"];
-    if($tmp_imagen!=""){
-        move_uploaded_file($tmp_imagen,"../../../assets/img/team/".$nombre_archivo_imagen);
+    // Preparamos los datos para la inserción a la base de datos
+    $campos = "`imagen`, `nombrecompleto`, `puesto`, `twitter`, `facebook`, `linkedin`";
+    $valores = ":imagen, :nombrecompleto, :puesto, :twitter, :facebook, :linkedin";
 
-    }
+    // Insertamos el registro en la base de datos
+    $sql = "INSERT INTO `equipo` ($campos) VALUES ($valores);";
+    $sentencia = $conexion->prepare($sql);
+    
+    $sentencia->execute([
+        ":imagen" => $nombre_archivo_imagen,
+        ":nombrecompleto" => $nombrecompleto,
+        ":puesto" => $puesto,
+        ":twitter" => $twitter,
+        ":facebook" => $facebook,
+        ":linkedin" => $linkedin
+    ]);
 
-    //Recibe los datos del formulario y prepara la insercion a la base
-    $sentencia = $conexion->prepare("INSERT INTO `equipo` (`ID`, `imagen`, `nombrecompleto`, `puesto`, `twitter`,`facebook`,`linkedin`) 
-    VALUES (NULL, :imagen, :nombrecompleto, :puesto, :twitter, :facebook, :linkedin);");
-
-    //Donde encuentre ":   " reemplaza el valor de la variable
-    $sentencia->bindParam(":imagen", $nombre_archivo_imagen);
-    $sentencia->bindParam(":nombrecompleto", $nombrecompleto);
-    $sentencia->bindParam(":puesto", $puesto);
-    $sentencia->bindParam(":twitter", $twitter);
-    $sentencia->bindParam(":facebook", $facebook);
-    $sentencia->bindParam(":linkedin", $linkedin);
-
-    $sentencia->execute();
     $mensaje = "Registro agregado con éxito.";
     header("Location:index.php?mensaje=" . $mensaje);
-
 }
+
 include("../../templates/header.php");?>
 
 
