@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-06-2023 a las 22:30:38
+-- Tiempo de generación: 17-07-2023 a las 23:49:12
 -- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.0
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `atc`
 --
-CREATE DATABASE IF NOT EXISTS `atc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `atc`;
 
 -- --------------------------------------------------------
 
@@ -105,7 +103,7 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`ID`, `imagen`, `nombrecompleto`, `puesto`, `twitter`, `facebook`, `linkedin`) VALUES
-(1, '1687212091_FOTO 2022.jpg', 'JAVIER ALFONSO MORAN RODRIGUEZ', 'CEO', 'Twitter:', 'Facebook:', 'Linkedin:');
+(1, '1689615761_FOTO PERFIL 2022 2.jpg', 'JAVIER ALFONSO MORAN RODRIGUEZ', 'CEO', 'Twitter:', 'Facebook:', 'Linkedin:');
 
 -- --------------------------------------------------------
 
@@ -172,7 +170,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`ID`, `usuario`, `password`, `correo`) VALUES
-(1, 'Atc', '123456', 'atc@hotmail.com');
+(5, 'atc', '$2y$10$BmOVtac13R.OxuDH.dtThuHdKjkdR5..8QiZ98ur18nE8DxwrZS4K', 'tecnycompu@gmail.com');
 
 --
 -- Índices para tablas volcadas
@@ -228,7 +226,7 @@ ALTER TABLE `configuraciones`
 -- AUTO_INCREMENT de la tabla `entradas`
 --
 ALTER TABLE `entradas`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -240,7 +238,7 @@ ALTER TABLE `equipo`
 -- AUTO_INCREMENT de la tabla `portafolio`
 --
 ALTER TABLE `portafolio`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
@@ -252,7 +250,7 @@ ALTER TABLE `servicios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
