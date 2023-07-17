@@ -1,0 +1,13 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo transparente -->
+  <rect width="500" height="500" fill="none" />
+
+  <!-- Letra T (al fondo, un poco más grande) -->
+  <text x="125" y="350" font-size="320" font-family="Arial" fill="#FFDC00" text-anchor="middle">T</text>
+  
+  <!-- Letra C (en el medio) -->
+  <text x="250" y="350" font-size="320" font-family="Arial" fill="#0074D9" text-anchor="middle">C</text>
+  
+  <!-- Letra A (al frente, un poco más grande) -->
+  <text x="375" y="350" font-size="320" font-family="Arial" fill="#FF4136" text-anchor="middle">A</text>
+</svg>

@@ -28,7 +28,7 @@ if ($_POST) {
     }
 }
 
-// Resto del código sigue igual
+
 ?>
 
 <!doctype html>

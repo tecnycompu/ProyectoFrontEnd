@@ -1,5 +1,6 @@
 <?php
 
+// Funcion para subir imagenes desde una ruta en el Pc
 function subirImagen($imagen, $rutaDestino) {
     if (!empty($imagen["name"])) {
         $fecha_imagen = new DateTime();
@@ -11,13 +12,14 @@ function subirImagen($imagen, $rutaDestino) {
     return "";
 }
 
+// Funcion para Insertar registros en base de datos
 function insertarRegistro($conexion, $tabla, $campos, $valores) {
     $sql = "INSERT INTO $tabla ($campos) VALUES ($valores);";
     $sentencia = $conexion->prepare($sql);
     return $sentencia->execute();
 }
 
-
+// Funcion para actualizar registros en base de datos
 function actualizarRegistro($tabla, $datos, $idCampo, $idValor)
 {
     global $conexion;
@@ -47,6 +49,7 @@ function actualizarRegistro($tabla, $datos, $idCampo, $idValor)
     }
 }
 
+// Funcion para actualizar imagenes en base de datos
 function actualizarImagen($tabla, $idCampo, $idValor, $imagenCampo, $directorio)
 {
     global $conexion; 
